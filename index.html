@@ -1,55 +1,50 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Rotación de Tableros GSP</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f8f9fa;
-    }
+    <meta charset="UTF-8">
+    <title>Rotación de Tableros GSP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
 
-    #timer {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background: #d1ecf1;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-weight: bold;
-    }
+        #controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
 
-    #controls {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
+        #controls button {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+        }
 
-    #controls button {
-      padding: 10px 20px;
-      margin: 0 5px;
-      font-size: 16px;
-      border: none;
-      border-radius: 6px;
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-    }
-
-    #controls button:hover {
-      background-color: #0056b3;
-    }
-  </style>
+        #timer {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-  <div id="timer">00:00</div>
-  <div id="controls">
-    <button onclick="resume()">Reanudar</button>
-    <button onclick="pause()">Detener</button>
-  </div>
 
-  <script src="script.js"></script>
+<div id="controls">
+    <button onclick="startRotation()">▶ Reanudar</button>
+    <button onclick="pauseRotation()">⏸ Detener</button>
+    <div id="timer">00:20</div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
