@@ -1,62 +1,65 @@
 const LINKS = [
-  "https://app.powerbi.com/groups/me/reports/7e9d3785-efd4-4ba6-86b2-e6890eaf9efc/ReportSection020b3c6bb1de02141e39?chromeless=true&experience=power-bi",
-  "https://app.powerbi.com/groups/me/reports/82b9efd6-ed22-472f-95e9-336547f995f1/7494775d5c4c11eddb1d?chromeless=true&experience=power-bi"
+  "https://app.powerbi.com/view?r=eyJrIjoiM2UyY2UwOTMtMjg4Yi00ODI1LWIxYmQtZmNkMzQ2ZDkwYmVhIiwidCI6IjhlMzQ0NGVmLWIzMzUtNDgxYS05OTVjLTZkOWMyMjEwMjhkOSJ9", // tablero embebido
+  "https://app.powerbi.com/view?r=eyJrIjoiYTRjZThkMjctNzAzZi00ZTI3LTk0YTUtOGRhZjk4ZjAzZDIyIiwidCI6IjhlMzQ0NGVmLWIzMzUtNDgxYS05OTVjLTZkOWMyMjEwMjhkOSJ9"
 ];
 
-const PING_URL = "https://script.google.com/macros/s/AKfycbxxx/exec"; // tu webhook Apps Script
-const ROTATION_INTERVAL = 20 * 1000;
+const ROTATION_INTERVAL = 20000; // 20 segundos
+const iframe = document.getElementById("iframeContainer");
+const timerDisplay = document.getElementById("timer");
+const startBtn = document.getElementById("startBtn");
+const stopBtn = document.getElementById("stopBtn");
 
 let index = 0;
+let remainingTime = ROTATION_INTERVAL;
 let timer = null;
-let countdown = ROTATION_INTERVAL;
-let paused = false;
+let countdown = null;
+let isPaused = false;
 
-function rotar() {
-  if (paused) return;
-  location.href = LINKS[index];
-  enviarPing();
-  index = (index + 1) % LINKS.length;
+function updateTimerDisplay(ms) {
+  const totalSeconds = Math.floor(ms / 1000);
+  const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+  const seconds = String(totalSeconds % 60).padStart(2, "0");
+  timerDisplay.textContent = `${minutes}:${seconds}`;
 }
 
-function enviarPing() {
-  fetch(PING_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      origen: "Landing Tableros GSP",
-      tablero: LINKS[index],
-      timestamp: new Date().toISOString()
-    })
-  }).then(() => console.log("✅ Ping enviado")).catch(e => console.warn("❌ Ping fallido", e));
-}
+function startRotation() {
+  if (timer) clearTimeout(timer);
+  if (countdown) clearInterval(countdown);
 
-function actualizarContador() {
-  if (!paused) {
-    countdown -= 1000;
-    if (countdown <= 0) countdown = 0;
-  }
+  isPaused = false;
+  updateTimerDisplay(remainingTime);
 
-  const min = String(Math.floor(countdown / 60000)).padStart(2, "0");
-  const sec = String(Math.floor((countdown % 60000) / 1000)).padStart(2, "0");
-  document.getElementById("timer").textContent = `${min}:${sec}`;
-}
-
-function iniciarTimer() {
-  paused = false;
-  countdown = ROTATION_INTERVAL;
-  timer = setInterval(() => {
-    actualizarContador();
-    if (countdown <= 0) rotar();
+  countdown = setInterval(() => {
+    if (!isPaused) {
+      remainingTime -= 1000;
+      if (remainingTime <= 0) remainingTime = 0;
+      updateTimerDisplay(remainingTime);
+    }
   }, 1000);
+
+  timer = setTimeout(() => {
+    index = (index + 1) % LINKS.length;
+    iframe.src = LINKS[index];
+    remainingTime = ROTATION_INTERVAL;
+    startRotation(); // restart cycle
+  }, remainingTime);
 }
 
-function detenerTimer() {
-  paused = true;
-  clearInterval(timer);
+function stopRotation() {
+  isPaused = true;
+  clearTimeout(timer);
+  clearInterval(countdown);
 }
 
-document.getElementById("startBtn").onclick = () => iniciarTimer();
-document.getElementById("stopBtn").onclick = () => detenerTimer();
+startBtn.onclick = () => {
+  if (isPaused) {
+    remainingTime = remainingTime || ROTATION_INTERVAL;
+    startRotation();
+  }
+};
 
-iniciarTimer(); // empieza automáticamente
+stopBtn.onclick = stopRotation;
+
+// Comienza con el primer tablero
+iframe.src = LINKS[index];
+startRotation();
