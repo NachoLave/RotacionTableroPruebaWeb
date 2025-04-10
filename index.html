@@ -5,13 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tableros GSP</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f3f5;
+    }
+    #iframeContainer {
+      width: 100vw;
+      height: 100vh;
+      border: none;
+    }
+    #timer {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #cceeff;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+      z-index: 9999;
+    }
+    #controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+    }
+    #controls button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #controls button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
+
   <div id="timer">00:00</div>
   <div id="controls">
     <button id="startBtn">Reanudar</button>
     <button id="stopBtn">Detener</button>
   </div>
+  <iframe id="iframeContainer"></iframe>
+
   <script src="script.js"></script>
 </body>
 </html>
