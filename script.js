@@ -1,7 +1,8 @@
 const LINKS = [
-  "https://app.powerbi.com/view?r=eyJrIjoiYzEyMzQ1NjctZGVmZC00YWFiLTk0ZjktY2MzZTBiNzEyYzA2IiwidCI6Ijg2ZjJmMTgwLWRiZTMtNGY5NC05ZTIzLTliYmI4OWRkMWY2YiIsImMiOjR9", // ejemplo 1
-  "https://app.powerbi.com/view?r=eyJrIjoiYmNiY2QwM2QtYjhkYS00ZGM4LWFkYzYtYzE1ODhkYjdmNjAzIiwidCI6Ijg2ZjJmMTgwLWRiZTMtNGY5NC05ZTIzLTliYmI4OWRkMWY2YiIsImMiOjR9", // ejemplo 2
-  "https://app.powerbi.com/view?r=eyJrIjoiZjY1NTU2YjYtYzVmYy00ZTJlLWIxYWQtZTM1MzY1YjY2YTVkIiwidCI6Ijg2ZjJmMTgwLWRiZTMtNGY5NC05ZTIzLTliYmI4OWRkMWY2YiIsImMiOjR9"  // ejemplo 3
+  "https://app.powerbi.com/groups/647f43d9-54a1-47ee-9e78-604bb84ac9ff/reports/01661e10-0139-4bee-bf88-1b96ba9d7f2e/44f3f26abe0a6fb92b24?experience=power-bi&chromeless=true", //Empleados - Altas y bajas
+        "https://app.powerbi.com/groups/647f43d9-54a1-47ee-9e78-604bb84ac9ff/reports/01661e10-0139-4bee-bf88-1b96ba9d7f2e/ReportSectionf9fe292b4b0b2244a793?experience=power-bi&chromeless=true", //Edad y Sexo
+        "https://app.powerbi.com/groups/647f43d9-54a1-47ee-9e78-604bb84ac9ff/reports/01661e10-0139-4bee-bf88-1b96ba9d7f2e/ReportSection7b34db0f300b875c8c1b?experience=power-bi&chromeless=true", //Antiguedad
+"https://app.powerbi.com/groups/647f43d9-54a1-47ee-9e78-604bb84ac9ff/reports/01661e10-0139-4bee-bf88-1b96ba9d7f2e/ReportSection1554dd7e053a66979e0b?experience=powerbi&chromeless=true", //empleados Dotacion
 ];
 
 
