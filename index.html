@@ -1,26 +1,71 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tableros GSP</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotador de Tableros Power BI</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background-color: black;
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
     }
-
-    iframe {
-      border: none;
-      width: 100%;
-      height: 100%;
+    h1 {
+      font-size: 2rem;
+    }
+    .status {
+      margin-top: 1rem;
+      font-size: 1.1rem;
     }
   </style>
 </head>
 <body>
-  <iframe id="tableroFrame" src=""></iframe>
-  <script src="script.js"></script>
+  <h1>Rotador de Tableros GSP</h1>
+  <div class="status" id="status">Esperando...</div>
+
+  <script>
+    const LINKS = [
+      "https://app.powerbi.com/groups/me/reports/7e9d3785-efd4-4ba6-86b2-e6890eaf9efc/ReportSection020b3c6bb1de02141e39?ctid=9d6555ab-db4f-4ab0-8e7e-39efc4dc6730&chromeless=true&experience=power-bi",
+      "https://app.powerbi.com/groups/me/reports/88b3d9cb-4e34-46b3-8f05-4e2776595a03/ReportSection598b87c7344b73973402?ctid=9d6555ab-db4f-4ab0-8e7e-39efc4dc6730&chromeless=true&experience=power-bi",
+      "https://app.powerbi.com/groups/me/reports/82b9efd6-ed22-472f-95e9-336547f995f1/7494775d5c4c11eddb1d?ctid=9d6555ab-db4f-4ab0-8e7e-39efc4dc6730&chromeless=true&experience=power-bi"
+    ];
+
+    const PING_URL = "https://script.google.com/macros/s/AKfycbxxxx/exec";
+    const ROTATION_INTERVAL = 20 * 1000;
+    let index = 0;
+    let popup = null;
+
+    function rotarTablero() {
+      if (popup && !popup.closed) popup.close();
+      popup = window.open(LINKS[index], '_blank');
+      document.getElementById('status').textContent = `Mostrando: Tablero ${index + 1}`;
+      enviarPing(index);
+      index = (index + 1) % LINKS.length;
+    }
+
+    function enviarPing(tableroIndex) {
+      fetch(PING_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          origen: "Landing Tableros GSP",
+          tablero: LINKS[tableroIndex],
+          timestamp: new Date().toISOString()
+        })
+      })
+      .then(() => console.log("✅ Ping enviado"))
+      .catch(err => console.warn("❌ Error de ping:", err));
+    }
+
+    rotarTablero();
+    setInterval(rotarTablero, ROTATION_INTERVAL);
+  </script>
 </body>
 </html>
