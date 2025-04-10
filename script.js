@@ -6,65 +6,50 @@ const LINKS = [
 ];
 
 
-const ROTATION_INTERVAL = 20000; // 20 segundos
-let index = 0;
-let timer = null;
-let remainingTime = ROTATION_INTERVAL;
-let startTime = 0;
-let paused = false;
-let otherTab = null;
 
-function openTablero(index) {
-  const url = LINKS[index];
-  if (!otherTab || otherTab.closed) {
-    otherTab = window.open(url, '_blank');
-  } else {
-    otherTab.location.href = url;
-  }
+const ROTATION_TIME = 20; // segundos
+let intervalId = null;
+let countdown = ROTATION_TIME;
+let currentIndex = 0;
+let secondaryTab = null;
+
+function updateTimer() {
+    const timer = document.getElementById("timer");
+    timer.textContent = `00:${String(countdown).padStart(2, "0")}`;
+}
+
+function openOrUpdateTab(url) {
+    if (secondaryTab == null || secondaryTab.closed) {
+        secondaryTab = window.open(url, "_blank");
+    } else {
+        secondaryTab.location.href = url;
+    }
 }
 
 function rotate() {
-  clearInterval(timer);
-  index = (index + 1) % LINKS.length;
-  openTablero(index);
-  startCountdown();
+    openOrUpdateTab(LINKS[currentIndex]);
+    currentIndex = (currentIndex + 1) % LINKS.length;
 }
 
-function startCountdown() {
-  paused = false;
-  startTime = Date.now();
-  timer = setInterval(() => {
-    const elapsed = Date.now() - startTime;
-    remainingTime = ROTATION_INTERVAL - elapsed;
+function tick() {
+    countdown--;
+    updateTimer();
 
-    if (remainingTime <= 0) {
-      rotate();
-    } else {
-      updateTimerDisplay();
+    if (countdown <= 0) {
+        countdown = ROTATION_TIME;
+        rotate();
     }
-  }, 1000);
 }
 
-function updateTimerDisplay() {
-  const seconds = Math.floor(remainingTime / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const display = `${String(minutes).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
-  document.getElementById("timer").textContent = display;
+function startRotation() {
+    if (intervalId) return;
+    intervalId = setInterval(tick, 1000);
 }
 
-function pause() {
-  if (!paused) {
-    clearInterval(timer);
-    paused = true;
-  }
+function pauseRotation() {
+    clearInterval(intervalId);
+    intervalId = null;
 }
 
-function resume() {
-  if (paused) {
-    startCountdown();
-  }
-}
-
-// === INICIO ===
-openTablero(index);
-startCountdown();
+updateTimer();
+startRotation();
