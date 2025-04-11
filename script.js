@@ -13,7 +13,7 @@ const LINKS = [
 
 
 
-const ROTATION_TIME = 20; // segundos
+const ROTATION_TIME = 1200; // segundos
 let intervalId = null;
 let countdown = ROTATION_TIME;
 let currentIndex = 0;
