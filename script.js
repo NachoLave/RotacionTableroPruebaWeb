@@ -9,7 +9,7 @@ const LINKS = [
     "https://app.powerbi.com/groups/me/reports/f542c10d-bc0a-41be-8983-9a6b9f25ccb2/39641eae0b32fe7ea9da?ctid=9d6555ab-db4f-4ab0-8e7e-39efc4dc6730&experience=power-bi&chromeless=true"
 ];
 
-const ROTATION_TIME = 300; // 10 minutos en segundos
+const ROTATION_TIME = 30; // 10 minutos en segundos
 let intervalId = null;
 let countdown = ROTATION_TIME;
 let currentIndex = 0;
